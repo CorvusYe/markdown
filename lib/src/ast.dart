@@ -8,7 +8,7 @@ typedef Resolver = Node? Function(String name, [String? title]);
 ///
 /// Roughly corresponds to Node in the DOM. Will be either an Element or Text.
 abstract class Node {
-  void accept(NodeVisitor visitor);
+  void accept(NodeVisitor visitor, {Node? parent});
 
   String get textContent;
 }
@@ -42,11 +42,11 @@ class Element implements Node {
   bool get isEmpty => children == null;
 
   @override
-  void accept(NodeVisitor visitor) {
+  void accept(NodeVisitor visitor, {Node? parent}) {
     if (visitor.visitElementBefore(this)) {
       if (children != null) {
         for (var child in children!) {
-          child.accept(visitor);
+          child.accept(visitor, parent: this);
         }
       }
       visitor.visitElementAfter(this);
@@ -66,7 +66,8 @@ class Text implements Node {
   Text(this.text);
 
   @override
-  void accept(NodeVisitor visitor) => visitor.visitText(this);
+  void accept(NodeVisitor visitor, {Node? parent}) =>
+      visitor.visitText(this, parent: parent);
 
   @override
   String get textContent => text;
@@ -85,7 +86,7 @@ class UnparsedContent implements Node {
   UnparsedContent(this.textContent);
 
   @override
-  void accept(NodeVisitor visitor) => null;
+  void accept(NodeVisitor visitor, {Node? parent}) => null;
 }
 
 /// Visitor pattern for the AST.
@@ -93,7 +94,7 @@ class UnparsedContent implements Node {
 /// Renderers or other AST transformers should implement this.
 abstract class NodeVisitor {
   /// Called when a Text node has been reached.
-  void visitText(Text text);
+  void visitText(Text text, {Node? parent});
 
   /// Called when an Element has been reached, before its children have been
   /// visited.

@@ -94,7 +94,7 @@ class HtmlRenderer implements NodeVisitor {
   }
 
   @override
-  void visitText(Text text) {
+  void visitText(Text text, {Node? parent}) {
     var content = text.text;
     if (const ['br', 'p', 'li'].contains(_lastVisitedTag)) {
       var lines = LineSplitter.split(content);
