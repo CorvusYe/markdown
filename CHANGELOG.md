@@ -1,6 +1,16 @@
-## 4.0.1-dev
+## 5.0.0-dev
 
-* Enforce lint rules found in pedantic 1.11.0.
+* Breaking change: Change the type of `parseInline`'s parameter from `String?`
+  to `String`.
+* Fix table-rendering bug when table rows have trailing whitespace.
+  [#368](https://github.com/dart-lang/markdown/issues/368).
+
+## 4.0.1
+
+* Export `src/emojis.dart` in public API.
+* Update version of example page.
+* Internal: enforce lint rules found in the lints package.
+* Bump io dependency to `^1.0.0`.
 
 ## 4.0.0
 
